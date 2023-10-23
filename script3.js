@@ -1,25 +1,28 @@
-const options = ['😃', '😄', '😁', '😆', '😅'];
-const voteCounts = Array(options.length).fill(0);
+const options = ['😃', '😄', '😁', '😆', '😅', '😅'];
 
-function displayResults() {
-    const container = document.querySelector('.smiley-container');
-    container.innerHTML = '';
+const container = document.querySelector('.smiley-container');
+let voteCounts = Array(options.length).fill(0);
+container.innerHTML = '';
 
-    options.forEach((option, index) => {
-        const smileyDiv = document.createElement('div');
-        smileyDiv.classList.add('smiley');
-        smileyDiv.textContent = option;
-        smileyDiv.addEventListener('click', () => {
-            voteCounts[index]++;
-            displayResults();
-        });
+options.forEach((option, index) => {
+    const smileyDiv = document.createElement('div');
+    const countDiv = document.createElement('div');
+    smileyDiv.id = 'smiley' + index;
+    smileyDiv.classList.add('smiley');
+    countDiv.classList.add('count');
+    smileyDiv.textContent = option;
+    countDiv.textContent = '0';
+    smileyDiv.appendChild(countDiv);
+    container.appendChild(smileyDiv);
+});
 
-        const countDiv = document.createElement('div');
-        countDiv.textContent = voteCounts[index];
+container.addEventListener('click', (event) => {
+    const smiles = document.querySelectorAll('.smiley');
 
-        container.appendChild(smileyDiv);
-        smileyDiv.appendChild(countDiv);
-    });
-}
-
-displayResults();
+    for (let i = 0; i < smiles.length; i++) {
+        if (event.target.id === smiles[i].id) {
+            voteCounts[i]++;
+            smiles[i].querySelector('.count').textContent = voteCounts[i];
+        }
+    }
+});
